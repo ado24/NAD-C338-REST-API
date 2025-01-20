@@ -1,0 +1,12 @@
+{
+  "name": "NAD-C338-REST-API",
+  "version": "1.0.0",
+  "description": "NAD C338 REST API, with Express.js proxy",
+  "main": "api-server/server.js",
+  "scripts": {
+    "start": "node api-server/server.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}

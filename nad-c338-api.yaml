@@ -1,0 +1,250 @@
+openapi: 3.1.0
+info:
+  title: NAD C338 Control API
+  version: 1.0.0
+  description: API for controlling NAD C338 amplifier
+servers:
+  - url: http://localhost:3000
+paths:
+  /power:
+    get:
+      summary: Get power status
+      responses:
+        '200':
+          description: Power status
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  power:
+                    type: string
+        '500':
+          description: Server error
+    post:
+      summary: Set power status
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                state:
+                  type: string
+                  enum: [On, Off]
+      responses:
+        '200':
+          description: Power status set
+        '500':
+          description: Server error
+  /volume:
+    get:
+      summary: Get volume level
+      responses:
+        '200':
+          description: Volume level
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  volume:
+                    type: number
+        '500':
+          description: Server error
+    put:
+      summary: Set volume level
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                level:
+                  type: number
+      responses:
+        '200':
+          description: Volume level set
+        '500':
+          description: Server error
+  /source:
+    get:
+      summary: Get source
+      responses:
+        '200':
+          description: Source
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  source:
+                    type: string
+        '500':
+          description: Server error
+    put:
+      summary: Set source
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                source:
+                  type: string
+      responses:
+        '200':
+          description: Source set
+        '500':
+          description: Server error
+  /mute:
+    get:
+      summary: Get mute status
+      responses:
+        '200':
+          description: Mute status
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  mute:
+                    type: string
+        '500':
+          description: Server error
+    post:
+      summary: Mute
+      responses:
+        '200':
+          description: Muted
+        '500':
+          description: Server error
+  /unmute:
+    post:
+      summary: Unmute
+      responses:
+        '200':
+          description: Unmuted
+        '500':
+          description: Server error
+  /brightness:
+    get:
+      summary: Get brightness level
+      responses:
+        '200':
+          description: Brightness level
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  brightness:
+                    type: number
+        '500':
+          description: Server error
+    put:
+      summary: Set brightness level
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                level:
+                  type: number
+      responses:
+        '200':
+          description: Brightness level set
+        '500':
+          description: Server error
+  /bass:
+    get:
+      summary: Get bass status
+      responses:
+        '200':
+          description: Bass status
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  bass:
+                    type: string
+        '500':
+          description: Server error
+    post:
+      summary: Set bass
+      responses:
+        '200':
+          description: Bass set
+        '500':
+          description: Server error
+    delete:
+      summary: Unset bass
+      responses:
+        '200':
+          description: Bass unset
+        '500':
+          description: Server error
+  /auto-sense:
+    get:
+      summary: Get auto sense status
+      responses:
+        '200':
+          description: Auto sense status
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  autoSense:
+                    type: string
+        '500':
+          description: Server error
+    post:
+      summary: Set auto sense
+      responses:
+        '200':
+          description: Auto sense set
+        '500':
+          description: Server error
+    delete:
+      summary: Unset auto sense
+      responses:
+        '200':
+          description: Auto sense unset
+        '500':
+          description: Server error
+  /auto-standby:
+    get:
+      summary: Get auto standby status
+      responses:
+        '200':
+          description: Auto standby status
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  autoStandby:
+                    type: string
+        '500':
+          description: Server error
+    post:
+      summary: Set auto standby
+      responses:
+        '200':
+          description: Auto standby set
+        '500':
+          description: Server error
+    delete:
+      summary: Unset auto standby
+      responses:
+        '200':
+          description: Auto standby unset
+        '500':
+          description: Server error
