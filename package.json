@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "NAD C338 REST API, with Express.js proxy",
   "main": "api-server/server.js",
-  "type": "module",
   "scripts": {
     "start-servers": "concurrently \"npm run api-server\" \"npm run tcp-server\"",
     "api-server": "node api-server/server.js",
