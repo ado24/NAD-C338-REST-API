@@ -4,9 +4,12 @@
   "description": "NAD C338 REST API, with Express.js proxy",
   "main": "api-server/server.js",
   "scripts": {
-    "start": "node api-server/server.js"
+    "start-servers": "concurrently \"npm run api-server\" \"npm run tcp-server\"",
+    "api-server": "node api-server/server.js",
+    "tcp-server": "node tcp-server/server.js"
   },
   "dependencies": {
+    "concurrently": "^9.1.2",
     "express": "^4.21.2"
   }
 }
