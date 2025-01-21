@@ -1,27 +1,30 @@
-const http = require('http');
-const net = require('net');
-const { promisify } = require('util');
+import http from 'http';
+import net from 'net';
 
 let client;
 let reconnectAttempts = 0;
 const maxReconnectAttempts = 5;
 const reconnectInterval = 5000; // 5 seconds
+const maxListeners = 30;
+
+const errorCodes = ["ECONNRESET", "ECONNREFUSED", "ENETUNREACH", "ETIMEDOUT"];
 
 const connectToServer = async (ip, port) => {
     return new Promise((resolve, reject) => {
-        client = new net.Socket();
-        client.connect(port, ip, () => {
-            console.log(`Connected to server at ${ip}:${port}`);
+        client = net.createConnection({ port: port, host: ip }, () => {
+            client.setMaxListeners(maxListeners);
+            console.log(`Connected to ${ip}:${port}`);
             reconnectAttempts = 0; // Reset attempts on successful connection
-            resolve();
+            resolve(client);
         });
 
-        client.on('error', (err) => {
-            if (err.code === 'ECONNRESET' || err.code === 'ECONNREFUSED') {
+        client.on('error', err => {
+            if (errorCodes.includes(err.code)) {
                 console.error(`Connection error: ${err.message}`);
                 client.destroy();
                 attemptReconnect(ip, port);
             } else {
+                console.error(`Error: ${err}`);
                 reject(err);
             }
         });
@@ -34,8 +37,7 @@ const connectToServer = async (ip, port) => {
 
 const attemptReconnect = (ip, port) => {
     if (reconnectAttempts < maxReconnectAttempts) {
-        reconnectAttempts++;
-        console.log(`Reconnection attempt ${reconnectAttempts}...`);
+        console.log(`Reconnection attempt ${++reconnectAttempts}...`);
         setTimeout(() => connectToServer(ip, port), reconnectInterval);
     } else {
         console.error('Max reconnection attempts reached. Giving up.');
@@ -54,7 +56,7 @@ const requestHandler = async (req, res) => {
         return;
     }
 
-    if (req.method === 'POST' && req.url === '/send-command') {
+    if (req.method === 'POST') {
         let body = '';
         req.on('data', chunk => {
             body += chunk.toString();
