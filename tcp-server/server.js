@@ -1,25 +1,51 @@
 import http from 'http';
 import net from 'net';
+import dotenv from 'dotenv';
+dotenv.config({'path': './tcp-server/properties.env'});
 
-let client = null;
+let client;
+let reconnectAttempts = 0;
 
-const connectToServer = (ip, port) => {
+const nadTcpPort = process.env.NAD_TCP_PORT;
+const maxReconnectAttempts = process.env.MAX_RECONNECT_ATTEMPTS;
+const reconnectInterval = process.env.RECONNECT_INTERVAL; // 5 seconds
+const maxListeners = parseInt(process.env.MAX_LISTENERS);
+
+const errorCodes = ["ECONNRESET", "ECONNREFUSED", "ENETUNREACH", "ETIMEDOUT"];
+
+const connectToServer = async (ip, port) => {
     return new Promise((resolve, reject) => {
         client = net.createConnection({ port: port, host: ip }, () => {
-            client.setMaxListeners(20);
+            client.setMaxListeners(maxListeners);
             console.log(`Connected to ${ip}:${port}`);
+            reconnectAttempts = 0; // Reset attempts on successful connection
             resolve(client);
         });
 
         client.on('error', err => {
-            console.error(`Error: ${err}`);
-            reject(err);
+            if (errorCodes.includes(err.code)) {
+                console.error(`Connection error: ${err.message}`);
+                client.destroy();
+                attemptReconnect(ip, port);
+            } else {
+                console.error(`Error: ${err}`);
+                reject(err);
+            }
         });
 
         client.on('close', () => {
             console.log('Connection closed');
         });
     });
+};
+
+const attemptReconnect = (ip, port) => {
+    if (reconnectAttempts < maxReconnectAttempts) {
+        console.log(`Reconnection attempt ${++reconnectAttempts}...`);
+        setTimeout(() => connectToServer(ip, port), reconnectInterval);
+    } else {
+        console.error('Max reconnection attempts reached. Giving up.');
+    }
 };
 
 const requestHandler = async (req, res) => {
@@ -72,7 +98,7 @@ const requestHandler = async (req, res) => {
 
 const server = http.createServer(requestHandler);
 
-server.listen(30001, '0.0.0.0', () => {
+server.listen(nadTcpPort, '0.0.0.0', () => {
     console.log('Server is listening on port 30001');
 });
 
