@@ -23,7 +23,9 @@ export class NADC338 {
             });
             if (readReply) {
                 const text = await response.text();
-                return text.split('=')[1].trim();
+                if (text.includes('='))
+                    return text.split('=')[1].trim();
+                return text.trim();
             }
             return null;
         } catch (error) {

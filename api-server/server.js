@@ -1,12 +1,16 @@
 import express from 'express';
 import { NADC338 } from '../model/NAD-C338.js';
+import dotenv from 'dotenv';
+dotenv.config({'path': './api-server/properties.env'});
 
 const app = express();
-const port = 3000;
 
+const port = process.env.API_SERVER_LISTENER_PORT;
+const ip = process.env.BLUOS_IP;
+const bluOsPort = parseInt(process.env.BLUOS_TCP_PORT);
 
 app.use(express.json());
-let nad = new NADC338("10.0.0.251");
+let nad = new NADC338(ip, bluOsPort);
 
 // GET endpoints
 app.get('/power', async (req, res) => {
