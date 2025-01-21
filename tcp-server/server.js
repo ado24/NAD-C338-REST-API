@@ -1,25 +1,45 @@
 const http = require('http');
 const net = require('net');
+const { promisify } = require('util');
 
-let client = null;
+let client;
+let reconnectAttempts = 0;
+const maxReconnectAttempts = 5;
+const reconnectInterval = 5000; // 5 seconds
 
-const connectToServer = (ip, port) => {
+const connectToServer = async (ip, port) => {
     return new Promise((resolve, reject) => {
-        client = net.createConnection({ port: port, host: ip }, () => {
-            client.setMaxListeners(20);
-            console.log(`Connected to ${ip}:${port}`);
-            resolve(client);
+        client = new net.Socket();
+        client.connect(port, ip, () => {
+            console.log(`Connected to server at ${ip}:${port}`);
+            reconnectAttempts = 0; // Reset attempts on successful connection
+            resolve();
         });
 
-        client.on('error', err => {
-            console.error(`Error: ${err}`);
-            reject(err);
+        client.on('error', (err) => {
+            if (err.code === 'ECONNRESET' || err.code === 'ECONNREFUSED') {
+                console.error(`Connection error: ${err.message}`);
+                client.destroy();
+                attemptReconnect(ip, port);
+            } else {
+                reject(err);
+            }
         });
 
         client.on('close', () => {
             console.log('Connection closed');
         });
     });
+};
+
+const attemptReconnect = (ip, port) => {
+    if (reconnectAttempts < maxReconnectAttempts) {
+        reconnectAttempts++;
+        console.log(`Reconnection attempt ${reconnectAttempts}...`);
+        setTimeout(() => connectToServer(ip, port), reconnectInterval);
+    } else {
+        console.error('Max reconnection attempts reached. Giving up.');
+    }
 };
 
 const requestHandler = async (req, res) => {
@@ -34,7 +54,7 @@ const requestHandler = async (req, res) => {
         return;
     }
 
-    if (req.method === 'POST') {
+    if (req.method === 'POST' && req.url === '/send-command') {
         let body = '';
         req.on('data', chunk => {
             body += chunk.toString();
