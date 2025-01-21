@@ -1,5 +1,5 @@
-const http = require('http');
-const net = require('net');
+import http from 'http';
+import net from 'net';
 
 let client = null;
 
