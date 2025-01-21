@@ -1,11 +1,15 @@
 import http from 'http';
 import net from 'net';
+import dotenv from 'dotenv';
+dotenv.config({'path': './tcp-server/properties.env'});
 
 let client;
 let reconnectAttempts = 0;
-const maxReconnectAttempts = 5;
-const reconnectInterval = 5000; // 5 seconds
-const maxListeners = 30;
+
+const nadTcpPort = process.env.NAD_TCP_PORT;
+const maxReconnectAttempts = process.env.MAX_RECONNECT_ATTEMPTS;
+const reconnectInterval = process.env.RECONNECT_INTERVAL; // 5 seconds
+const maxListeners = parseInt(process.env.MAX_LISTENERS);
 
 const errorCodes = ["ECONNRESET", "ECONNREFUSED", "ENETUNREACH", "ETIMEDOUT"];
 
@@ -94,7 +98,7 @@ const requestHandler = async (req, res) => {
 
 const server = http.createServer(requestHandler);
 
-server.listen(30001, '0.0.0.0', () => {
+server.listen(nadTcpPort, '0.0.0.0', () => {
     console.log('Server is listening on port 30001');
 });
 
