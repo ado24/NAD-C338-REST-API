@@ -17,4 +17,4 @@ Run `npm run tcp-server` to start the TCP server. Use Ctrl+C to stop the server.
 Ensure the binding on port 30001 is available.
 
 ## Client usage
-See nad-c338-api for OpenAPI specification
+See [nad-c338-api.yaml](api/nad-c338-api.yaml) for OpenAPI specification for the RESTful API in use

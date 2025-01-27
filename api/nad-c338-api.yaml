@@ -4,7 +4,13 @@ info:
   version: 1.0.0
   description: API for controlling NAD C338 amplifier
 servers:
-  - url: http://localhost:3000
+  - url: http://{ip}:{port}
+    description: NAD C338 Amplifier
+    variables:
+      ip:
+        default: localhost
+      port:
+          default: 3000
 paths:
   /power:
     get:
