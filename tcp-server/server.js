@@ -6,14 +6,14 @@ dotenv.config({'path': './tcp-server/properties.env'});
 let client;
 let reconnectAttempts = 0;
 
-const nadTcpPort = process.env.NAD_TCP_PORT;
+const nadTcpPort = parseInt(process.env.NAD_TCP_PORT);
 const maxReconnectAttempts = process.env.MAX_RECONNECT_ATTEMPTS;
 const reconnectInterval = process.env.RECONNECT_INTERVAL; // 5 seconds
 const maxListeners = parseInt(process.env.MAX_LISTENERS);
 
 const errorCodes = ["ECONNRESET", "ECONNREFUSED", "ENETUNREACH", "ETIMEDOUT"];
 
-const connectToServer = async (ip, port) => {
+export const connectToServer = async (ip, port) => {
     return new Promise((resolve, reject) => {
         client = net.createConnection({ port: port, host: ip }, () => {
             client.setMaxListeners(maxListeners);
@@ -39,7 +39,7 @@ const connectToServer = async (ip, port) => {
     });
 };
 
-const attemptReconnect = (ip, port) => {
+export const attemptReconnect = (ip, port) => {
     if (reconnectAttempts < maxReconnectAttempts) {
         console.log(`Reconnection attempt ${++reconnectAttempts}...`);
         setTimeout(() => connectToServer(ip, port), reconnectInterval);
@@ -80,11 +80,15 @@ const requestHandler = async (req, res) => {
 
             client.write(cmd + '\n');
 
-            client.on('data', data => {
+            // Remove existing listeners to avoid adding multiple listeners
+            client.removeAllListeners('data');
+            client.removeAllListeners('error');
+
+            client.once('data', data => {
                 res.end(data.toString());
             });
 
-            client.on('error', err => {
+            client.once('error', err => {
                 res.statusCode = 500;
                 console.error(`Error: ${err}`);
                 res.end('Error: ' + err.message);
