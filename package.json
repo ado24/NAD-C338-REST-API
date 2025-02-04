@@ -17,7 +17,8 @@
   "dependencies": {
     "concurrently": "^9.1.2",
     "dotenv": "^16.4.7",
-    "express": "^4.21.2"
+    "express": "^4.21.2",
+    "gulp": "^5.0.0"
   },
   "devDependencies": {
     "@jest/globals": "^29.7.0",
