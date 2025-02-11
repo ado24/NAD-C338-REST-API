@@ -3,7 +3,7 @@ export class NADC338 {
         this.ip = ip;
         this.port = port;
         this.powerState = null;
-        this.volume = null;
+        this.volume = 0;
         this.source = null;
         this.mute = null;
         this.brightness = null;
