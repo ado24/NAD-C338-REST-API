@@ -10,7 +10,7 @@ servers:
       ip:
         default: localhost
       port:
-          default: 3000
+        default: 3000
 paths:
   /power:
     get:
@@ -27,6 +27,13 @@ paths:
                     type: string
         '500':
           description: Server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
     post:
       summary: Set power status
       requestBody:
@@ -42,8 +49,23 @@ paths:
       responses:
         '200':
           description: Power status set
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  power:
+                    type: string
         '500':
           description: Server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+
   /volume:
     get:
       summary: Get volume level
@@ -59,6 +81,13 @@ paths:
                     type: number
         '500':
           description: Server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
     put:
       summary: Set volume level
       requestBody:
@@ -73,8 +102,23 @@ paths:
       responses:
         '200':
           description: Volume level set
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  volume:
+                    type: number
         '500':
           description: Server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+
   /source:
     get:
       summary: Get source
@@ -90,6 +134,13 @@ paths:
                     type: string
         '500':
           description: Server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
     put:
       summary: Set source
       requestBody:
@@ -104,8 +155,23 @@ paths:
       responses:
         '200':
           description: Source set
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  source:
+                    type: string
         '500':
           description: Server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+
   /mute:
     get:
       summary: Get mute status
@@ -121,6 +187,13 @@ paths:
                     type: string
         '500':
           description: Server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
     post:
       summary: Mute
       responses:
@@ -128,6 +201,14 @@ paths:
           description: Muted
         '500':
           description: Server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+
   /unmute:
     post:
       summary: Unmute
@@ -136,6 +217,14 @@ paths:
           description: Unmuted
         '500':
           description: Server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+
   /brightness:
     get:
       summary: Get brightness level
@@ -151,6 +240,13 @@ paths:
                     type: number
         '500':
           description: Server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
     put:
       summary: Set brightness level
       requestBody:
@@ -165,8 +261,23 @@ paths:
       responses:
         '200':
           description: Brightness level set
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  brightness:
+                    type: number
         '500':
           description: Server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+
   /bass:
     get:
       summary: Get bass status
@@ -182,6 +293,13 @@ paths:
                     type: string
         '500':
           description: Server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
     post:
       summary: Set bass
       responses:
@@ -189,6 +307,13 @@ paths:
           description: Bass set
         '500':
           description: Server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
     delete:
       summary: Unset bass
       responses:
@@ -196,6 +321,14 @@ paths:
           description: Bass unset
         '500':
           description: Server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+
   /auto-sense:
     get:
       summary: Get auto sense status
@@ -211,6 +344,13 @@ paths:
                     type: string
         '500':
           description: Server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
     post:
       summary: Set auto sense
       responses:
@@ -218,6 +358,13 @@ paths:
           description: Auto sense set
         '500':
           description: Server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
     delete:
       summary: Unset auto sense
       responses:
@@ -225,6 +372,14 @@ paths:
           description: Auto sense unset
         '500':
           description: Server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+
   /auto-standby:
     get:
       summary: Get auto standby status
@@ -240,6 +395,13 @@ paths:
                     type: string
         '500':
           description: Server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
     post:
       summary: Set auto standby
       responses:
@@ -247,6 +409,13 @@ paths:
           description: Auto standby set
         '500':
           description: Server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
     delete:
       summary: Unset auto standby
       responses:
@@ -254,3 +423,10 @@ paths:
           description: Auto standby unset
         '500':
           description: Server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
