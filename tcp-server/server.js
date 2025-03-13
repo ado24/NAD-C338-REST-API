@@ -65,7 +65,7 @@ const requestHandler = async (req, res) => {
         return;
     }
 
-    if (req.method === 'POST') {
+    if (req.method === 'POST' || req.method === 'PUT' || req.method === 'DELETE') {
         let body = '';
         req.on('data', chunk => {
             body += chunk.toString();

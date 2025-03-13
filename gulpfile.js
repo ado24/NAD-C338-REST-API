@@ -51,6 +51,17 @@ const copyModel = () => {
         .pipe(gulp.dest('dist/model'));
 };
 
+// Copy keys and certs
+const copyKeys = () => {
+    return gulp.src('keys/**/*')
+        .pipe(gulp.dest('dist/keys'));
+}
+
+const copyCerts = () => {
+    return gulp.src('certs/**/*')
+        .pipe(gulp.dest('dist/certs'));
+}
+
 // Generate package.json
 const generatePackageJson = () => {
     return gulp.src('package.json')
@@ -82,7 +93,8 @@ gulp.task('clean', clean);
 gulp.task('transpile', gulp.parallel(transpileApiServer, transpileTcpServer,transpileModel));
 
 // Wrapper for copying non-JS files
-gulp.task('copy', gulp.parallel(copyApiServer, copyTcpServer, copyModel));
+gulp.task('copy', gulp.parallel(copyApiServer, copyTcpServer, copyModel, copyKeys, copyCerts));
+
 
 // Task to transpile JavaScript files
 gulp.task('package-js', gulp.series(transpileApiServer, transpileTcpServer, transpileModel, "copy")); // gulp.parallel(copyApiServer, copyTcpServer, copyModel)));
