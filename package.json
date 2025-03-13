@@ -8,7 +8,8 @@
     "start-servers": "concurrently \"npm run api-server\" \"npm run tcp-server\"",
     "api-server": "node api-server/server.js",
     "tcp-server": "node tcp-server/server.js",
-    "run-test": "jest --verbose --coverage"
+    "run-test": "jest --coverage",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
   },
   "workspaces": [
     "api-server",
@@ -20,12 +21,17 @@
     "express": "^4.21.2"
   },
   "devDependencies": {
+    "@babel/core": "^7.26.7",
+    "@babel/preset-env": "^7.26.7",
     "@jest/globals": "^29.7.0",
-    "@babel/preset-env": "^7.26.0",
     "babel-jest": "^29.7.0",
+    "del": "^8.0.0",
+    "gulp": "^5.0.0",
+    "gulp-typescript": "^6.0.0-alpha.1",
+    "gulp-babel": "^8.0.0",
     "jest": "^29.7.0",
-    "nock": "^13.5.6",
-    "node": "^18.20.6",
+    "nock": "^14.0.0",
+    "node": "^23.7.0",
     "supertest": "^7.0.0"
   }
 }
