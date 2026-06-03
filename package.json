@@ -16,7 +16,7 @@
     "tcp-server"
   ],
   "dependencies": {
-    "concurrently": "^9.1.2",
+    "concurrently": "^10.0.3",
     "dotenv": "^17.0.1",
     "express": "^5.1.0"
   },
