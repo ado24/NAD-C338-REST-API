@@ -25,7 +25,7 @@
     "@babel/preset-env": "^8.0.2",
     "@jest/globals": "^30.0.2",
     "babel-jest": "^30.0.2",
-    "del": "^8.0.0",
+    "del": "^9.0.1",
     "gulp": "^5.0.0",
     "gulp-typescript": "^6.0.0-alpha.1",
     "gulp-babel": "^8.0.0",
